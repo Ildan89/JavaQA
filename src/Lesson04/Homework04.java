@@ -34,16 +34,16 @@ public class Homework04 {
     public static char emptyCell = '_';
 
     public static char coinCell = 'o';
+    public static int coinsCount;
+
+    public static int levelsCount = 0;
 
     public static void main(String[] args) {
-        createMap();
 
-        spawnPlayer();
-        spawnEnemies();
-        map[1][1] = coinCell;
+        createNewLevel();
 
         while (true) {
-            showMap();
+
             playerMoveAction();
 
             if (!isPlayerAlive()) {
@@ -51,15 +51,27 @@ public class Homework04 {
                 break;
             }
 
-            if (!isEnemyExist()) {
+            showMap(true);
+
+            if (!isCoinsExist()) {
                 System.out.println(playerName + " is win. Count coins = " + playerCoins);
-                break;
+                createNewLevel();
             }
+
         }
-        showMap();
+        showMap(false);
         System.out.println("Game over!");
     }
 
+    public static void createNewLevel() {
+        levelsCount++;
+        System.out.println("======== LEVEL " + levelsCount +" ========");
+        createMap();
+        spawnPlayer();
+        spawnEnemies();
+        spawnCoins();
+        showMap(false);
+    }
     public static void createMap() {
         mapWidth = randomValue(mapSizeMin, mapSizeMax);
         mapHeight = randomValue(mapSizeMin, mapSizeMax);
@@ -73,11 +85,15 @@ public class Homework04 {
         System.out.println("Create map [" + mapWidth + "x" + mapHeight + "]");
     }
 
-    public static void showMap() {
+    public static void showMap(boolean isEnemiesHided) {
         System.out.println("========== MAP ==========");
         for (int y = 0; y < mapHeight; y++) {
             for (int x = 0; x < mapWidth; x++) {
-                System.out.print(map[y][x] + "|");
+                if(map[y][x] == enemy && isEnemiesHided) {
+                    System.out.print(emptyCell + "|");
+                } else {
+                    System.out.print(map[y][x] + "|");
+                }
             }
             System.out.println();
         }
@@ -109,6 +125,27 @@ public class Homework04 {
             map[enemyPosY][enemyPosX] = enemy;
         }
         System.out.println(("Enemy count: " + enemiesCount + ". HP=" + enemyHealth + ", PWR=" + enemyPower));
+    }
+
+    public static void spawnCoins() {
+        //К этому моменту игрок и враги уже распределены, поэтому исходим из количества оставшихся полей.
+        coinsCount = (mapWidth * mapHeight - 1 - enemiesCount) / 4;
+        //Не очень правильно конечно, т.к ничто не предостережет нас от вызова этого метода перед spawnEnemies();
+        //Если по формуле получилось 0 монеток, то добавим 1, чтоб была хотя бы одна монетка
+        coinsCount += coinsCount == 0 ? 1 : 0;
+
+        int coinPosX;
+        int coinPosY;
+
+        for (int i = 1; i <= coinsCount; i++) {
+
+            do {
+                coinPosX = random.nextInt(mapWidth);
+                coinPosY = random.nextInt(mapHeight);
+            } while (!isCellClear(coinPosX, coinPosY));
+            map[coinPosY][coinPosX] = coinCell;
+        }
+        System.out.println("Coins count: " + coinsCount);
     }
 
     public static void playerMoveAction() {
@@ -168,6 +205,7 @@ public class Homework04 {
         if (map[playerPosY][playerPosX] == coinCell) {
             int count = randomValue(100, 300);
             playerCoins += count;
+            coinsCount--;
             System.out.println(playerName + " get " + count + " coins. " + playerName + " coins = " + playerCoins);
         }
     }
@@ -188,7 +226,7 @@ public class Homework04 {
         return playerHealth > 0;
     }
 
-    public static boolean isEnemyExist() {
-        return enemiesCount > 0;
+    public static boolean isCoinsExist() {
+        return coinsCount > 0;
     }
 }
