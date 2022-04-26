@@ -29,7 +29,7 @@ public class Homework04 {
     public static int mapWidth;
     public static int mapHeight;
     public static int mapSizeMin = 2;
-    public static int mapSizeMax = 5;
+    public static int mapSizeMax = 10;
     public static char[][] map;
     public static char emptyCell = '_';
 
