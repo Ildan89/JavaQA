@@ -6,6 +6,15 @@ import Lesson06.Animal.Dog;
 
 public class Homework06 {
     public static void main(String[] args) {
+        String s1 = "Java";
+        String s2 = new String("Java");
+        String s3 = null;
+        System.out.println(s1 == s2);
+        System.out.println(s1.equals(s2));
+        System.out.println(s3);
+
+        int e = new int[4][8].length;
+        System.out.println(e);
         Dog dogBobik = new Dog("Бобик");
         Dog dogPushok = new Dog("Пушок");
         Cat catMurzik = new Cat("Мурзик");
