@@ -32,4 +32,16 @@ public class GameInfoArea extends JPanel {
         add(levelGame);
         add(countEnemies);
     }
+
+    public void setSizeMap(int w, int h) {
+        this.sizeMap.setText("Size map: " + Integer.toString(w) + "x" + Integer.toString(h));
+    }
+
+    public void setLevel(int level) {
+        this.levelGame.setText("Level: " + Integer.toString(level));
+    }
+
+    public void setEnemies(int enemies) {
+        this.countEnemies.setText("EXP: " + Integer.toString(enemies));
+    }
 }

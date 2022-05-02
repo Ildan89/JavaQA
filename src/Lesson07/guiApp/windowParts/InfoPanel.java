@@ -33,11 +33,15 @@ public class InfoPanel extends JPanel {
 
         gameControlArea = new GameControlArea(this);
         gameInfoArea = new GameInfoArea(this);
+        playerControlArea = new PlayerControlArea(this);
+        playerInfoArea = new PlayerInfoArea(this);
 
         createLogArea();
 
         add(gameControlArea);
         add(gameInfoArea);
+        add(playerInfoArea);
+        add(playerControlArea);
         add(scrollBox);
     }
 
